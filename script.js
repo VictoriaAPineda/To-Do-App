@@ -4,6 +4,7 @@
 // easy reference
 const form = document.getElementById("todoform");
 const todoInput = document.getElementById("newtodo"); // gets what the user types
+const todosListElement = document.getElementById("todos-list");// the list area
 
 // array to hold the todo list items
 let todos = [];
@@ -64,5 +65,25 @@ function saveTodo(){
 
 // Render TODOS
 function renderTodos(){
-    
+    todos.forEach((todo, index)=>{
+        // clear element before a rerender
+        todosListElement.innerHTML = "";
+
+        // Render todos
+        // += is used to ensure the previous todos are not overwritten
+        // and instead are appended
+        todosListElement.innerHTML += `
+        <div class="todo" id= ${index}>
+            <!-- reads as: if todo is checked, then(?)
+                use this one, else(:) this one instead-->
+            <i class="bi ${todo.checked ? "bi-check-circle-fill" : "bi-circle"}"
+                style="color: ${todo.color}"
+            ></i>
+
+            <p class="">${todo.value}</p>
+            <i class="bi bi-pencil-square"></i>
+            <i class="bi bi-trash"></i>
+        </div>
+       `
+    });
 }
