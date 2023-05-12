@@ -17,6 +17,7 @@ but note that root has a higher specificity.
   margin: 0;
   box-sizing: border-box;
   font-family: 'Ubuntu', monospace;
+
 }
 html {
   font-size: 20px;
@@ -37,6 +38,7 @@ body {
 
   position: relative;
   overflow: hidden;
+  
 }
 header {
   width: 100%;
@@ -57,10 +59,12 @@ header {
   width: 100%;
   height: 50px;
   padding: 0.25rem 0;
+  
 }
 .new-todo form {
   display: flex;
   align-items: center;
+  
 }
 .new-todo form input {
   flex: 1;
@@ -72,7 +76,13 @@ header {
   padding-left: 0.5rem;
   font-size: 1rem;
   color: #fff;
+
+  
 }
+::placeholder{ /* addded for more visibilty */
+    color: white;
+}
+
 .new-todo form button {
   width: 60px;
   height: 40px;
@@ -96,11 +106,12 @@ header {
   border-radius: 0 0 5px 5px;
 }
 
-#todos-list .todo {
+#todos-list .todo { 
   display: flex;
   align-items: center;
   padding: 0.75rem 0.5rem;
   border-radius: 5px;
+
 }
 #todos-list .todo:hover {
   background-color: rgba(0, 0, 0, 0.1);
@@ -108,9 +119,11 @@ header {
 #todos-list .todo * {
   cursor: pointer;
   margin-right: 0.5rem;
+  
 }
 #todos-list .todo i {
   font-size: 0.9rem;
+
 }
 #todos-list .todo p {
   flex: 1;
