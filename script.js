@@ -65,11 +65,11 @@ function saveTodo(){
 
 // Render TODOS
 function renderTodos(){
+    // clear element before a rerender
+    todosListElement.innerHTML = "";
+     
+    // Render todos
     todos.forEach((todo, index)=>{
-        // clear element before a rerender
-        todosListElement.innerHTML = "";
-
-        // Render todos
         // += is used to ensure the previous todos are not overwritten
         // and instead are appended
         todosListElement.innerHTML += `
@@ -84,6 +84,6 @@ function renderTodos(){
             <i class="bi bi-pencil-square"></i>
             <i class="bi bi-trash"></i>
         </div>
-       `
+       `;
     });
 }
