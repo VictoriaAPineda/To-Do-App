@@ -96,10 +96,10 @@ function renderTodos(){
 todosListElement.addEventListener('click',(event)=>{
     //target is used to know what exactly is being clicked on
     const target = event.target;
-    // this will select the parent element of the target
     const parentElement = target.parentNode;
 
     //only want to use if it has a class named todo
+    //otherwise nothing happens
     if(parentElement.className !== 'todo' ) return;
 
     // todo id
@@ -110,7 +110,7 @@ todosListElement.addEventListener('click',(event)=>{
     // dataset is used to access the custom attributes/actions
     // data-attrbute_name_here="value of choice here"
     const action = target.dataset.action;
-    // is the evaluation are both true, the && will run the function on the right 
+    // if the evaluation are both true, the && will run the function on the right 
     action === "check" && checkTodo(todoId);
     //action === "edit" && editTodo(todoId);
     //action === "delete" && deleteTodo(todoId);
@@ -127,7 +127,8 @@ function checkTodo(todoId){
             ({
                 // using a Spread operator, since only checked is affected
                 ...todo,
-                checked: index === todoId ? !todo.checked : todo.checked // check /uncheck
+                checked: index === todoId ? !todo.checked : todo.checked 
+                // toggles check /uncheck upon clicking
             }));
     renderTodos();// will have to rerence the todos to show the changes
 }
