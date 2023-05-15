@@ -27,6 +27,7 @@ function saveTodo(){
     const todoValue = todoInput.value;
 
     // checks to see if a todo input is empty upon submission
+    // will be true/false
     const isEmpty = todoValue === '';
 
     // need to check for duplicate submissions
@@ -72,18 +73,61 @@ function renderTodos(){
     todos.forEach((todo, index)=>{
         // += is used to ensure the previous todos are not overwritten
         // and instead are appended
+        // circle - text - edit - trashcan
         todosListElement.innerHTML += `
         <div class="todo" id= ${index}>
             <!-- reads as: if todo is checked, then(?)
                 use this one, else(:) this one instead-->
+
             <i class="bi ${todo.checked ? "bi-check-circle-fill" : "bi-circle"}"
                 style="color: ${todo.color}"
+                data-action="check"
             ></i>
-
-            <p class="">${todo.value}</p>
-            <i class="bi bi-pencil-square"></i>
-            <i class="bi bi-trash"></i>
+            <p class="" data-action="check" >${todo.value}</p>
+            <i class="bi bi-pencil-square" data-action="edit"></i>
+            <i class="bi bi-trash" data-action="delete"></i>
         </div>
        `;
     });
+}
+
+// event listener for all the todos(list items)
+
+todosListElement.addEventListener('click',(event)=>{
+    //target is used to know what exactly is being clicked on
+    const target = event.target;
+    // this will select the parent element of the target
+    const parentElement = target.parentNode;
+
+    //only want to use if it has a class named todo
+    if(parentElement.className !== 'todo' ) return;
+
+    // todo id
+    const todo = parentElement;
+    const todoId = Number(todo.id);
+
+    // target action
+    // dataset is used to access the custom attributes/actions
+    // data-attrbute_name_here="value of choice here"
+    const action = target.dataset.action;
+    // is the evaluation are both true, the && will run the function on the right 
+    action === "check" && checkTodo(todoId);
+    //action === "edit" && editTodo(todoId);
+    //action === "delete" && deleteTodo(todoId);
+    //console.log(todoId, action);
+
+})
+
+
+//  Check a todo
+function checkTodo(todoId){
+    todos = todos.map((todo, index) => 
+        // note that index is same a the ids
+        // the () says its a object and not a function
+            ({
+                // using a Spread operator, since only checked is affected
+                ...todo,
+                checked: index === todoId ? !todo.checked : todo.checked // check /uncheck
+            }));
+    renderTodos();// will have to rerence the todos to show the changes
 }
