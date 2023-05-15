@@ -121,6 +121,7 @@ todosListElement.addEventListener('click',(event)=>{
 
 //  Check a todo
 function checkTodo(todoId){
+    // map creates a new array so as not to alter the original
     todos = todos.map((todo, index) => 
         // note that index is same a the ids
         // the () says its a object and not a function
