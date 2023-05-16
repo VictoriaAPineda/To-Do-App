@@ -70,6 +70,7 @@ function renderTodos(){
     todosListElement.innerHTML = "";
      
     // Render todos
+    //  scans tha array "todos", organizes each element as a todo object and notes its index
     todos.forEach((todo, index)=>{
         // += is used to ensure the previous todos are not overwritten
         // and instead are appended
@@ -131,5 +132,5 @@ function checkTodo(todoId){
                 checked: index === todoId ? !todo.checked : todo.checked 
                 // toggles check /uncheck upon clicking
             }));
-    renderTodos();// will have to rerence the todos to show the changes
+    renderTodos();// will have to rerender the todos to show the changes
 }
