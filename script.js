@@ -76,19 +76,19 @@ function renderTodos(){
         // and instead are appended
         // circle - text - edit - trashcan
         todosListElement.innerHTML += `
-        <div class="todo" id= ${index}>
-            <!-- reads as: if todo is checked, then(?)
-                use this one, else(:) this one instead-->
+            <div class="todo" id= ${index}>
+                <!-- reads as: if todo is checked, then(?)
+                    use this one, else(:) this one instead-->
 
-            <i class="bi ${todo.checked ? "bi-check-circle-fill" : "bi-circle"}"
-                style="color: ${todo.color}"
-                data-action="check"
-            ></i>
-            <p class="" data-action="check" >${todo.value}</p>
-            <i class="bi bi-pencil-square" data-action="edit"></i>
-            <i class="bi bi-trash" data-action="delete"></i>
-        </div>
-       `;
+                <i class="bi ${todo.checked ? "bi-check-circle-fill" : "bi-circle"}"
+                    style="color: ${todo.color}"
+                    data-action="check"
+                ></i>
+                <p class="" data-action="check" >${todo.value}</p>
+                <i class="bi bi-pencil-square" data-action="edit"></i>
+                <i class="bi bi-trash" data-action="delete"></i>
+            </div>
+        `;
     });
 }
 
