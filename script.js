@@ -72,21 +72,19 @@ function saveTodo(){
                     // if not, their todo values are Not changed
                     value: index === EditTodoId ? todoValue : todo.value,
                 }));
-            // to esnure further edits
+            // Resets the value
             EditTodoId = -1;
         }else{
-            // now we need to 'push'/'insert' this todo objsect into an array to store
+            // If not an edit,'push'/'insert' the new todo objsect into an array to store
             todos.push({
                 value: todoValue,
-                checked: false, // assume the todo item has not been completed by default
-                color:'#' + Math.floor(Math.random()*16777215).toString(16) 
-                //generate a random color for every todo object);
+                checked: false, // unchecked is the default
+                color:'#' + Math.floor(Math.random()*16777215).toString(16)// Generates a random color 
             });
         }      
-        // clear input area after it's been added 
-        todoInput.value="";
+        // Clear input area after submission
+        todoInput.value = "";
     }
-   //console.log(todos); //view the array 
 }
 
 // Render TODOS
