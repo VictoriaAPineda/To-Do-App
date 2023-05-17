@@ -8,9 +8,14 @@ const todosListElement = document.getElementById("todos-list");// the list area
 const notificationElement = document.querySelector(".notification");
 
 // array to hold the todo list items
-let todos = [];
+// parse will display todos(after refresh) or if its first time user
+// then will set up a empty array
+let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
 let EditTodoId = -1;
+
+// first render
+renderTodos();
 
 // Form Submit 
 // "listens" for the form submit action
@@ -19,11 +24,12 @@ form.addEventListener('submit',function(event){
     event.preventDefault(); // prevent form from refreshing the page
 
     saveTodo();
+    renderTodos(); //after the todo objects are saved, want them to display on the list!
+    // save to local storage
+    localStorage.setItem('todos',JSON.stringify(todos));
 
-    renderTodos(); //after the todo objects are saved,
-    // want them to display on the list!
 
-})
+});
 
 // savetodo function
 function saveTodo(){
@@ -78,6 +84,12 @@ function saveTodo(){
 
 // Render TODOS
 function renderTodos(){
+
+    if(todos.length === 0){
+        todosListElement.innerHTML = '<center>Nothing</center>'
+        return // code stops here
+    }
+
     // clear element before a rerender
     todosListElement.innerHTML = "";
      
@@ -96,7 +108,7 @@ function renderTodos(){
                     style="color: ${todo.color}"
                     data-action="check"
                 ></i>
-                <p class="" data-action="check" >${todo.value}</p>
+                <p class="${todo.checked ? "checked" : ""}" data-action="check" >${todo.value}</p>
                 <i class="bi bi-pencil-square" data-action="edit"></i>
                 <i class="bi bi-trash" data-action="delete"></i>
             </div>
@@ -145,6 +157,7 @@ function checkTodo(todoId){
                 // toggles check /uncheck upon clicking
             }));
     renderTodos();// will have to rerender the todos to show the changes
+    localStorage.setItem('todos',JSON.stringify(todos)); 
 }
 
 // Edit a todo
@@ -172,6 +185,7 @@ function deleteTodo(todoId){
 
    // re-render 
    renderTodos();
+   localStorage.setItem('todos',JSON.stringify(todos));
 
 }
 
