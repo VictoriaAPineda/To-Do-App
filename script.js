@@ -1,51 +1,57 @@
-// select elements
-// After the creation of html and css, select what things you want to 
-// work with to make it interactive, assigning it to a variable for
-// easy reference
+// Select html elements
 const form = document.getElementById("todoform");
 const todoInput = document.getElementById("newtodo"); // gets what the user types
 const todosListElement = document.getElementById("todos-list");// the list area
 const notificationElement = document.querySelector(".notification");
 
-// array to hold the todo list items
-// parse will display todos(after refresh) or if its first time user
-// then will set up a empty array
+/* Array to hold the list of todo objects
+ * Gets todos array from storage to display(after refresh)
+ * or sets up an empty array if new user/nothing in storage
+ */
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
+// Global vairable
 let EditTodoId = -1;
 
-// first render
+// First render (will display todos if in storage)
 renderTodos();
 
-// Form Submit 
-// "listens" for the form submit action
-// Parameters: ( event listener type, run this function when fired)
+/** 
+ * Form Submit
+ * Parameters: event listener type, run this function when fired
+ */
 form.addEventListener('submit',function(event){
-    event.preventDefault(); // prevent form from refreshing the page
+    // prevent form from refreshing the page on submit
+    event.preventDefault(); 
 
     saveTodo();
-    renderTodos(); //after the todo objects are saved, want them to display on the list!
-    // save to local storage
+    // After the todo objects are saved, display onscreen
+    renderTodos();
+    // Save to local storage
     localStorage.setItem('todos',JSON.stringify(todos));
-
-
 });
 
-// savetodo function
+/**  
+ * savetodo function
+ * Description: Saves user's todo input into the todos array
+*/
 function saveTodo(){
     const todoValue = todoInput.value;
 
-    // checks to see if a todo input is empty upon submission
-    // will be true/false
+    /** Checks to see if a todo input area is empty upon submission 
+     * return a true/false
+     */ 
     const isEmpty = todoValue === '';
 
-    // need to check for duplicate submissions
-    // this arrow function will looks through the array and compare
-    // with user's input to see if there exists a duplicate
-    // returns a true/false 
+    /**  
+     * Need to check for duplicate input submissions
+     * Arrow function will looks through the array and compare
+     * with user's input to see if there already exists a duplicate
+     * returns a true/false. 
+     * Uppercase coversion is to prevent issues of comparisions with users inputting with different cases
+     */
     const isDuplicate = todos.some((todo) => todo.value.toUpperCase() === todoValue.toUpperCase());
-    // * uppercase coversion is simply to prevent issues with input with different cases
- 
+  
     if(isEmpty){
 
         showNotification("Input is empty");
@@ -55,10 +61,11 @@ function saveTodo(){
         showNotification("This already exists!");
 
     }else{
-        // if not empty...
-        // each todo will be save as an object in the array along with noted attributes
+        // If not empty, each todo will be saved as an object in the array along with its attributes
+
+        // Checks if user is editing a todo
         if(EditTodoId >= 0){
-            //update a new todos array with the change
+            // Creates a new todos array with the changes
             todos = todos.map((todo, index)=>({
                     ...todo,
                     // if the todo id matches index then change it to new input
