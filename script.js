@@ -5,9 +5,12 @@
 const form = document.getElementById("todoform");
 const todoInput = document.getElementById("newtodo"); // gets what the user types
 const todosListElement = document.getElementById("todos-list");// the list area
+const notificationElement = document.querySelector(".notification");
 
 // array to hold the todo list items
 let todos = [];
+
+let EditTodoId = -1;
 
 // Form Submit 
 // "listens" for the form submit action
@@ -39,30 +42,39 @@ function saveTodo(){
  
     if(isEmpty){
 
-        alert("Input is empty");
+        showNotification("Input is empty");
 
     } else if(isDuplicate){
 
-        alert("This already exists!");
+        showNotification("This already exists!");
 
     }else{
         // if not empty...
-        // each todo will be save as an object in the array along with
-        // noted attributes
-        // now we need to 'push'/'insert' this todo objsect into an array to store
-        todos.push({
-                    value: todoValue,
-                    checked: false, // assume the todo item has not been completed by default
-                    color:'#' + Math.floor(Math.random()*16777215).toString(16) 
-                    //generate a random color for every todo object);
+        // each todo will be save as an object in the array along with noted attributes
+        if(EditTodoId >= 0){
+            //update a new todos array with the change
+            todos = todos.map((todo, index)=>({
+                    ...todo,
+                    // if the todo id matches index then change it to new input
+                    // if not, their todo values are Not changed
+                    value: index === EditTodoId ? todoValue : todo.value,
+                }));
+            // to esnure further edits
+            EditTodoId = -1;
+        }else{
+            // now we need to 'push'/'insert' this todo objsect into an array to store
+            todos.push({
+                value: todoValue,
+                checked: false, // assume the todo item has not been completed by default
+                color:'#' + Math.floor(Math.random()*16777215).toString(16) 
+                //generate a random color for every todo object);
             });
-               
+        }      
         // clear input area after it's been added 
         todoInput.value="";
     }
    //console.log(todos); //view the array 
 }
-
 
 // Render TODOS
 function renderTodos(){
@@ -113,8 +125,8 @@ todosListElement.addEventListener('click',(event)=>{
     const action = target.dataset.action;
     // if the evaluation are both true, the && will run the function on the right 
     action === "check" && checkTodo(todoId);
-    //action === "edit" && editTodo(todoId);
-    //action === "delete" && deleteTodo(todoId);
+    action === "edit" && editTodo(todoId);
+    action === "delete" && deleteTodo(todoId);
     //console.log(todoId, action);
 
 })
@@ -133,4 +145,45 @@ function checkTodo(todoId){
                 // toggles check /uncheck upon clicking
             }));
     renderTodos();// will have to rerender the todos to show the changes
+}
+
+// Edit a todo
+function editTodo(todoId){
+    // changes the input displayed, to what 
+    // element in the array is selected by its id
+    todoInput.value = todos[todoId].value;
+    EditTodoId = todoId;// set the id of the todo that is being edited
+
+}
+
+// delete a todo
+function deleteTodo(todoId){
+    // returns a new array
+    // will returns all the todos EXCEPT the one at the index 
+    // equal to the id
+   todos = todos.filter((todo, index)=> index!== todoId);
+
+   // prevents a issue where when editing a todo, then user decides to delete 
+   // the todo (before submitting the changes), 
+   // causes the edit upon submission to change the next todo element in the array.
+   // In this event, will instead add it as a new element todo object in the array
+   EditTodoId = -1;
+
+
+   // re-render 
+   renderTodos();
+
+}
+
+// show a notification
+function showNotification(msg){
+    // change the msg of the notif
+    notificationElement.innerHTML = msg;
+
+    // notification enter
+    notificationElement.classList.add('notif-enter');
+    // notification goes away
+    setTimeout(()=>{
+        notificationElement.classList.remove('notif-enter');
+    }, 2000);
 }
