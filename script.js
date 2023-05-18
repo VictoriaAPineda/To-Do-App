@@ -129,30 +129,36 @@ function renderTodos(){
     });
 }
 
-// event listener for all the todos(list items)
-
+/**  
+ * Event listener for all the todos elements
+ * Description: This eventlistener deals with the selection/interation
+ *  by a user of a listed todo item onscreen
+ */
 todosListElement.addEventListener('click',(event)=>{
-    //target is used to know what exactly is being clicked on
+    //target is used to know what exactly is being clicked onscreen
     const target = event.target;
     const parentElement = target.parentNode;
 
-    //only want to use if it has a class named todo
-    //otherwise nothing happens
+    /** 
+     * Only want to use if it has a class named todo, the focus of the target
+     * otherwise nothing happens
+    */
     if(parentElement.className !== 'todo' ) return;
 
     // todo id
     const todo = parentElement;
     const todoId = Number(todo.id);
 
-    // target action
-    // dataset is used to access the custom attributes/actions
-    // data-attrbute_name_here="value of choice here"
+    /**  
+     * Target action
+     * dataset is used to access the custom attributes/actions in the HTML classes
+     * format: data-attrbute_name_here = "value of choice here"
+    */
     const action = target.dataset.action;
-    // if the evaluation are both true, the && will run the function on the right 
+    // If the evaluation are both true, the && will run the function on the right 
     action === "check" && checkTodo(todoId);
     action === "edit" && editTodo(todoId);
     action === "delete" && deleteTodo(todoId);
-    //console.log(todoId, action);
 
 })
 
