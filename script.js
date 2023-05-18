@@ -10,7 +10,7 @@ const notificationElement = document.querySelector(".notification");
  */
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
-// Global vairable
+// Global vairable used to track which todo is being edited
 let EditTodoId = -1;
 
 // First render (will display todos if in storage)
@@ -61,23 +61,23 @@ function saveTodo(){
         showNotification("This already exists!");
 
     }else{
-        // If not empty, each todo will be saved as an object in the array along with its attributes
-
         // Checks if user is editing a todo
         if(EditTodoId >= 0){
             // Creates a new todos array with the changes
             todos = todos.map((todo, index)=>({
                     ...todo,
-                    // if the todo id matches index then change it to new input
-                    // if not, their todo values are Not changed
+                    /**  
+                     * if the todo id matches index then change it to new input
+                     * else, their todo values are Not changed
+                     */
                     value: index === EditTodoId ? todoValue : todo.value,
                 }));
-            // Resets the value
+            // Resets the id tracker 
             EditTodoId = -1;
         }else{
-            // If not an edit,'push'/'insert' the new todo objsect into an array to store
+            // If not an edit, push/insert the new todo object into the todos array
             todos.push({
-                value: todoValue,
+                value: todoValue, // user input 
                 checked: false, // unchecked is the default
                 color:'#' + Math.floor(Math.random()*16777215).toString(16)// Generates a random color 
             });
@@ -87,28 +87,36 @@ function saveTodo(){
     }
 }
 
-// Render TODOS
+/**  
+ * renderTodos fuunction
+ * Description: Displays the todo objects onscreen in a listed format
+ *  as a result of adding or editing the todos array
+ */
 function renderTodos(){
-
+    // Message is displayed if user has not added anything
     if(todos.length === 0){
         todosListElement.innerHTML = '<center>Nothing</center>'
         return // code stops here
     }
 
-    // clear element before a rerender
+    /**
+     * Clears the list area element before a rerender,
+     * otherwise the displayed list stacks the renders
+     * */ 
     todosListElement.innerHTML = "";
      
-    // Render todos
-    //  scans tha array "todos", organizes each element as a todo object and notes its index
+    /** 
+     * Render todos array
+     * Scans tha array "todos", organizes each element as a todo object and notes its index
+     * HTML is used to format the display
+    */
     todos.forEach((todo, index)=>{
-        // += is used to ensure the previous todos are not overwritten
-        // and instead are appended
-        // circle - text - edit - trashcan
+        /**  
+         * += ensures previous todos are not overwritten but appended
+         * circle - text - edit - delete
+        */
         todosListElement.innerHTML += `
             <div class="todo" id= ${index}>
-                <!-- reads as: if todo is checked, then(?)
-                    use this one, else(:) this one instead-->
-
                 <i class="bi ${todo.checked ? "bi-check-circle-fill" : "bi-circle"}"
                     style="color: ${todo.color}"
                     data-action="check"
