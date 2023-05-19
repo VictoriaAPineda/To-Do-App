@@ -162,13 +162,20 @@ todosListElement.addEventListener('click',(event)=>{
 
 })
 
-// wip here
-//  Check a todo
+
+/**
+ * checkTodo Function
+ * @param todoId : the id of a todo element
+ * Description: This function will strikethrough the todo 
+ *  item on the list
+ */
 function checkTodo(todoId){
     // map creates a new array so as not to alter the original
     todos = todos.map((todo, index) => 
-        // note that index is same a the ids
-        // the () says its a object and not a function
+        /**
+         * Note that index is same a the ids
+         * The () says its a object and not a function
+        */
             ({
                 // using a Spread operator, since only checked is affected
                 ...todo,
@@ -179,41 +186,60 @@ function checkTodo(todoId){
     localStorage.setItem('todos',JSON.stringify(todos)); 
 }
 
-// Edit a todo
+/**
+ * editTodo Function
+ * @param todoId : id of a todo element
+ * Description : Changes a todo's value/string to 
+ *  the new text based on user input
+ */
 function editTodo(todoId){
-    // changes the input displayed, to what 
-    // element in the array is selected by its id
+    /**  
+     * Changes the input displayed, to what 
+     * element in the array is selected by its id
+    */
     todoInput.value = todos[todoId].value;
     EditTodoId = todoId;// set the id of the todo that is being edited
 
 }
 
-// delete a todo
+/**
+  * deleteTodo Function 
+  * @param todoId : id of a todo object
+  * Description: todos array is filtered by removing a selected 
+  *  todo object from the array based on its id
+  * 
+ */
 function deleteTodo(todoId){
-    // returns a new array
-    // will returns all the todos EXCEPT the one at the index 
-    // equal to the id
+    /**  
+      * Returns a new array
+      * Returns all the todos EXCEPT the one at the selected index(id) 
+    */
    todos = todos.filter((todo, index)=> index!== todoId);
 
-   // prevents a issue where when editing a todo, then user decides to delete 
-   // the todo (before submitting the changes), 
-   // causes the edit upon submission to change the next todo element in the array.
-   // In this event, will instead add it as a new element todo object in the array
+   /** 
+    * Prevents a issue where while editing a todo, then user simultaneoulsy decides to delete 
+    * the todo (before submitting the changes), 
+    * causing the edit upon submission to change the next todo element in the array.
+    * In this event, -1 will instead cancel the edit
+   */
    EditTodoId = -1;
 
-
-   // re-render 
+   // re-render / updates what is displayed
    renderTodos();
    localStorage.setItem('todos',JSON.stringify(todos));
 
 }
 
-// show a notification
+/**
+ *  showNotification Funciton
+ *  @param msg : Disaplays a message to the users
+ *  The msg value is located in the saveTodo() function
+ */ 
 function showNotification(msg){
     // change the msg of the notif
     notificationElement.innerHTML = msg;
 
-    // notification enter
+    // notification enters screen
     notificationElement.classList.add('notif-enter');
     // notification goes away
     setTimeout(()=>{
